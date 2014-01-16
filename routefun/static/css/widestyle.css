@@ -55,7 +55,7 @@ a:hover {
 /*wraps all the main sections besides header and footer*/
 #main {
 	margin: 450px 3% 20px 3%;
-	border-radius: 7px;
+	border-radius: 8px;
 	background-color: #fff;
 	padding-bottom: 10px;
 
@@ -212,9 +212,13 @@ section h1 {
 	padding: 4% 17%;
 }
 #one li {
-	display: inline;
+	display: inline-block;
 	padding: 15px;
 	padding-left: 0;
+}
+#one p {
+	width: 150px;
+	padding-left: 10px;
 }
 #one img {
 	max-width: 130px;
@@ -389,75 +393,21 @@ dd {
 }
 
 
-
-
-
-/*-------------------------*\
-		Final-Block
-\*-------------------------*/
-
-
-#final-block {
-	width: 600px;
-	height: 500px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 30px;
-	margin-top: 90px;
-
-	background-color: #34495E;
-	padding: 25px;
-	padding-bottom: 50px;
-
-	border-radius: 7px;
-}
-
-#personal_info { /*massive text looks good in the header yo*/
-	width: 300px;
-
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 400px;
-
-	height: 160px;
-
-	border-radius: 4px;
-	padding: 10px;
-	background-color: white;
-}
-#personal_info ul {
-	list-style: none;
-}
-#picme {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-.cardleft {
-	width: 40%;
-	float: left;
-	border-right: 1px solid gray;
-}
-.cardright {
-	background-color: white;
-	padding-left: 100px; /*why*/
-}
-
-
-
-
-#letmeknow {
-	text-align: center;
-	padding-bottom: 50px;
-}
-
-
 #map-canvas {
     height: 600px;
     margin: 0px;
     padding: 0px;
 }
-
+#panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+}
 
 /*-----------------*
 	The Bar
