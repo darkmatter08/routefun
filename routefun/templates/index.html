@@ -12,6 +12,9 @@
 		<link rel="stylesheet" type="text/css" href="/static/css/normalize.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/widestyle.css">
 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+		<!--Google Polyline Map-->
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 		<script>
 			var startLat;
@@ -24,8 +27,8 @@
 
 			var lats = [42.6682657, 42.68, 42.80, 43.00];
 			var longs = [-83.23736024, -83.25, -83.90, -83.00];
+			//end sample data
 
-			// This example adds a UI control allowing users to remove the polyline from the map.
 
 			var route;
 			var map;
@@ -72,7 +75,25 @@
 
 			google.maps.event.addDomListener(window, 'load', initialize);
 
-    	</script>	
+    	</script>
+
+    	<!--JavaScript POST request for search results-->
+    	<script>
+    	$(document).ready(function(){
+    		var forward = function() {
+    			$.post("api/searchresults",
+    				{ranking:5},
+    				function(data, status){
+    					alert(data.results);
+    				});
+    		}
+
+    		$("#letsgo").click(function(){
+    			forward();
+    			alert("clicked letsgo");
+    		});
+    	});
+    	</script>
 	</head>
 
 	<body>
@@ -85,19 +106,12 @@
 			</ul>
 		</nav>
 
-		<!--good opportunity to add some graphics here <a href="#final-block"><img src="gnv.png"></a>-->
-
-		<!--<div class="watermark">
-			<a href="#final-block"><img src="gnv.png"></a>
-		</div>-->
-
 
 		<header>
 			<h1 id="myname">routeFun</h1>
-			<!--contact info at end, make an impression at the first look-->
 
 			<blockquote id="bigquote">
-				Half the fun is getting there.
+				Half the fun is in getting there.
 				<!--Getting there isn't half the fun, it's all the fun.-->
 				<!--For my part, I travel not to go anywhere, but to go. I travel for travel’s sake. The great affair is to move.-->
 			</blockquote>
@@ -153,9 +167,9 @@
 				       </div>
 				    </form>
 				</div>
-				<form action="api/searchresults" method="post">
-					<div>
-						<fieldset> <!--radio buttons-->
+				<!--action="api/searchresults" method="post"-->
+				<form>
+					<fieldset> <!--radio buttons-->
 						    <legend>Route type</legend>
 						    <input type="radio" name="funFactor" value="one"><label for="one">Eco</label>
 						    <input type="radio" name="funFactor" value="two"><label for="two">Eh</label>
@@ -163,9 +177,8 @@
 						    <input type="radio" name="funFactor" value="four"><label for="four">Better</label>
 						    <input type="radio" name="funFactor" value="five"><label for="five">Enthusiast</label>
 
-						    <input class="submit" type="submit" value="Let's go">
-						</fieldset>
-					</div>
+						    <input class="submit" type="submit" value="Let's go" id="letsgo">
+					</fieldset>
 				</form>
 				<p>Route: <span id="routetype"></span> Number: <span id="routenumber"></span> 
 					<form action="api/allgps" method="post">
@@ -190,9 +203,13 @@
     	<script>
     		//now how do I take in the JSON from AJAX?
 
+    		
+
+    		
+
     		var obj = {"results": [{"type": "home", "number": "0000000000"}, {"type": "home", "number": "1111111111"}, {"type": "home", "number": "2222222222"}, {"type": "home", "number": "3333333333"}]};
 
-    		//hell yeah this works
+
 			for (var i = 0; i < obj.results.length; i++) {
 				document.getElementById("routetype").innerHTML=obj.results[i].type 
 				document.getElementById("routenumber").innerHTML=obj.results[i].number
@@ -204,7 +221,7 @@
 		
 
 		<!--Scripts-->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		
 		<script src="/static/js/scrollspy.js"></script>
 
 	</body>
