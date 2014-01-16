@@ -9,10 +9,11 @@ authors = {'author1' : 'Shawn', 'author2' : 'Andrew'}
 
 # Homepage
 def home(request):
-	t = get_template('construction.html')
+	t = get_template('index.html')
 	html = t.render(Context(authors))
 	return HttpResponse(html)
 
+@csrf_exempt
 def searchResults(request):
 	if request.method != 'POST':
 		return HttpResponseBadRequest()
