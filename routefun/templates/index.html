@@ -97,7 +97,9 @@
 			<!--contact info at end, make an impression at the first look-->
 
 			<blockquote id="bigquote">
-				Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
+				Half the fun is getting there.
+				<!--Getting there isn't half the fun, it's all the fun.-->
+				<!--For my part, I travel not to go anywhere, but to go. I travel for travel’s sake. The great affair is to move.-->
 			</blockquote>
 		</header>
 
@@ -110,15 +112,15 @@
 				<ul>
 					<li>
 						<img src="/static/img/map.png">
-						<p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem</p>
+						<p>You can find your next destination. A GPS will find your quickest way there. But what if you believe in having fun in the journey?</p>
 					</li>
 					<li>
-						<img src="/static/img/map.png">
-						<p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem</p>
+						<img src="/static/img/compass.png">
+						<p>There is currently no dataset that describes all of our roads. With aggregated data and our own model, we have rated routes with ranking and type. You find routes that suit you best.</p>
 					</li>
 					<li>
-						<img src="/static/img/map.png">
-						<p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem</p>
+						<img src="/static/img/colors.png">
+						<p>You can optionally contribute. Using sensors in your smartphone and OBD-II data, you can help us build a better collection of fun-to-drive roads for all to enjoy.</p>
 					</li>
 				</ul>
 			</section>
@@ -147,7 +149,7 @@
 				    <form action="" id="start" method="post" target="_blank">
 				       <div class="required">
 				          <label for="zipcode_entry">Find a route near you</label>
-				          <input class="required" data-invalid-email="This field is invalid" data-required-field="This field is required" id="zipcode" name="zipcode" placeholder="your zipcode here" type="text"/>
+				          <input class="required" id="zipcode" name="zipcode" placeholder="your zipcode here" type="text"/>
 				       </div>
 				    </form>
 				</div>
@@ -165,21 +167,20 @@
 						</fieldset>
 					</div>
 				</form>
-				<p>Route: <span id="routetype"></span> Number: <span id="routenumber"></span></p>
+				<p>Route: <span id="routetype"></span> Number: <span id="routenumber"></span> 
+					<form action="api/allgps" method="post">
+						<input class="submit" type="submit" value="Show map">
+					</form>
+				</p>
 				<p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</p>
 			</section>
 
-			<section>
-
-
-			</section>
-
 			<section id="map-canvas">
-				
+				<!--Google Maps renders here-->
 			</section>
 			
 
-			<footer>Made at VW Hackathon</footer>
+			<footer>A design and code project made at VW Hackathon</footer>
 
 		</div>
 
@@ -187,17 +188,16 @@
 
 		<!--script for displaying the route results-->
     	<script>
-    		var JSONObject = {
-    			"type":"andrew",
-    			"number":30
-    		};
+    		//now how do I take in the JSON from AJAX?
 
-    		
     		var obj = {"results": [{"type": "home", "number": "0000000000"}, {"type": "home", "number": "1111111111"}, {"type": "home", "number": "2222222222"}, {"type": "home", "number": "3333333333"}]};
 
-    		//maybe loop for the number of name/value pairs within the object?
-    		document.getElementById("routetype").innerHTML=obj.result[0].type 
-			document.getElementById("routenumber").innerHTML=obj.results[0].number
+    		//hell yeah this works
+			for (var i = 0; i < obj.results.length; i++) {
+				document.getElementById("routetype").innerHTML=obj.results[i].type 
+				document.getElementById("routenumber").innerHTML=obj.results[i].number
+				//instead of inserting something in the span, I need to be generating HTML items
+			}; 
 
     	</script>
 
