@@ -25,8 +25,18 @@
 			startLat = 42.66934332;
 			startLng = -83.23433929;
 
-			var lats = [42.6682657, 42.68, 42.80, 43.00];
-			var longs = [-83.23736024, -83.25, -83.90, -83.00];
+			var lats;
+			var longs; 
+
+			$.post("/api/allgps", {abc:"abc"}, 
+				function(data, status){
+					lats = data.lats;
+					longs = data.longs;
+				}
+			)
+
+			// lats = [42.6682657, 42.68, 42.80, 43.00];
+			// longs = [-83.23736024, -83.25, -83.90, -83.00];
 			//end sample data
 
 
@@ -74,7 +84,6 @@
 			}
 
 			google.maps.event.addDomListener(window, 'load', initialize);
-
     	</script>
 
     	<!--JavaScript POST request for search results-->
@@ -84,13 +93,16 @@
     			$.post("api/searchresults",
     				{ranking:5},
     				function(data, status){
-    					alert(data.results);
+    					for (var i = 0; i < data.results.length; i++) {
+							document.getElementById("routetype").innerHTML=data.results[i].type 
+							document.getElementById("routenumber").innerHTML=data.results[i].number
+				//instead of inserting something in the span, I need to be generating HTML items
+			}; 
     				});
     		}
 
     		$("#letsgo").click(function(){
     			forward();
-    			alert("clicked letsgo");
     		});
     	});
     	</script>
@@ -183,13 +195,11 @@
 						    <input type="radio" name="funFactor" value="four"><label for="four">Better</label>
 						    <input type="radio" name="funFactor" value="five"><label for="five">Enthusiast</label>
 
-						    <input class="submit" type="submit" value="Let's go" id="letsgo">
+						    <input class="submit" value="Let's go" id="letsgo">
 					</fieldset>
 				</form>
-				<p>Route: <span id="routetype"></span> Number: <span id="routenumber"></span> 
-					<form action="api/allgps" method="post">
-						<input class="submit" type="submit" value="Show map">
-					</form>
+				<p>Route: <span id="routetype"></span> Number: <span id="routenumber"></span> <br/>
+						<button class="submit" id="showmap" value="Show map">Show Map</button>
 				</p>
 				<p>Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum</p>
 			</section>
@@ -213,7 +223,10 @@
 
     		
 
-    		var obj = {"results": [{"type": "home", "number": "0000000000"}, {"type": "home", "number": "1111111111"}, {"type": "home", "number": "2222222222"}, {"type": "home", "number": "3333333333"}]};
+    		var obj_old = {"results": [{"type": "home", "number": "1"}, {"type": "home", "number": "4"}, {"type": "home", "number": "3"}, {"type": "home", "number": "2"}]};
+
+
+
 
 
 			for (var i = 0; i < obj.results.length; i++) {

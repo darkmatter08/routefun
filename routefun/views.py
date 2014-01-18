@@ -21,7 +21,7 @@ def searchResults(request):
 	response_data = {}
 	results = []
 	for i in range(4):
-		results.append({ "type" : "home", "number": str(str(i)*10)})
+		results.append({ "type" : "Enthusiast", "number": str(5)})
 	response_data["results"] = results
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -29,10 +29,10 @@ def searchResults(request):
 # POST request with route ID to get all GPS Coords
 @csrf_exempt
 def getAllGPSCoords(request):
-	if request.method != 'POST':
-		return HttpResponseBadRequest()
-	#routeId = request.POST['routeId']
-
+	# if request.method != 'POST':
+	# 	return HttpResponseBadRequest()
+	routeId = request.POST['routeId']
+	print "allgps"
 	response_data = {}
 	response_data['lats'] = lats
 	response_data['longs'] = longs
