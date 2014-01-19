@@ -10,8 +10,8 @@ authors = {'author1' : 'Shawn', 'author2' : 'Andrew'}
 
 # Homepage
 def home(request):
-	t = get_template('index.html')
-	html = t.render(Context(authors))
+	t = get_template('alternate.html')
+	html = t.render(Context({}))#Context(authors))
 	return HttpResponse(html)
 
 @csrf_exempt
@@ -23,8 +23,9 @@ def searchResults(request):
 		ranking = request.POST['ranking']
 	else:
 		ranking = 4
-	ranking = 4
+	# ranking = 4
 	response_data = getTripsByRanking(ranking)
+	print "search results"
 	print response_data
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -48,5 +49,5 @@ def getAllGPSCoords(request):
 		idVehicles = 2
 
 	response_data = getAllGPSCoordsByTrip(idTrips, idVehicles)
-	print response_data
+	# print response_data
 	return HttpResponse(json.dumps(response_data), content_type="application/json")

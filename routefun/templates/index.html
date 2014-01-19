@@ -91,7 +91,7 @@
     	$(document).ready(function(){
     		var forward = function() {
     			$.post("api/searchresults",
-    				{ranking:5},
+    				{ranking:4},
     				function(data, status){
     					for (var i = 0; i < data.results.length; i++) {
 							document.getElementById("routetype").innerHTML=data.results[i].type 
@@ -189,7 +189,7 @@
 						    <input type="radio" name="funFactor" value="four"><label for="four">Better</label>
 						    <input type="radio" name="funFactor" value="five"><label for="five">Enthusiast</label>
 
-						    <input class="submit" value="Let's go" id="letsgo">
+						    <button class="submit" id="letsgo">Let's Go!</button>
 					</fieldset>
 				</form>
 				<p>Route: <span id="routetype"></span> Number: <span id="routenumber"></span> <br/>

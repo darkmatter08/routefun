@@ -1,0 +1,130 @@
+<!-- Alternative Homepage for testing-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+		<style>	</style>
+		<script>
+		var gps;
+		$(document).ready(function(){
+			// define functions:
+			
+			gps = function gps(myIdTrips, myIdVehicles) {
+				$.post('/api/allgps',
+					{idTrips: myIdTrips, idVehicles: myIdVehicles},
+					// Update Table
+					function(data, status) {
+						alert("myIdTrips: " + myIdTrips + " myIdVehicles: " + myIdVehicles);
+						alert(data);
+					}
+				);
+			};
+
+			function getResults(myRanking) {
+				$.post('/api/searchresults',
+					{ranking: myRanking},
+					// Update Table
+					function(data, status) {
+						//alert(data);
+						for (var index in data){
+							//alert(tuple);
+							var trip = data[index].idTrips;
+							var vehicle = data[index].idVehicles;
+							var trip_vehicle = trip + ', ' + vehicle;
+							$('#results').append('<tr><td><button type=\'button\' class="btn btn-primary gpsButton" onclick=\'$(document).ready(function(){gps(' + trip_vehicle + ')});\'>' + trip_vehicle + '</button></td></tr>');
+							$('#resultsOne').append('<tr><td class="idTrip">' + trip + '</td><td class="idVehicle">' + vehicle + '</td></tr>');
+						}
+						$("#resultsOne td").click(function(){
+							var idTrip = $(this).parent().children(".idTrip").text();
+							var idVehicle = $(this).parent().children(".idVehicle").text();
+							alert("idTrip: " + idTrip + " idVehicle: " + idVehicle);
+							gps(idTrip, idVehicle);
+						});
+					}
+				);
+			};
+
+			$("#one").click(function(){
+				getResults(1);
+			});
+			$("#two").click(function(){
+				getResults(2);
+			});
+			$("#three").click(function(){
+				getResults(3);
+			});
+			$("#four").click(function(){
+				getResults(4);
+			});
+			$("#five").click(function(){
+				getResults(5);
+			});
+
+			$("#one_gps").click(function(){
+				gps(1,1);
+			});
+			$("#two_gps").click(function(){
+				gps(2,2);
+			});
+			$("#three_gps").click(function(){
+				gps(2,4);
+			});
+			$("#four_gps").click(function(){
+				gps(5,2);
+			});
+			$("#five_gps").click(function(){
+				gps(4,1);
+			});
+			$(".gpsButton").click(function(){
+				gps()
+			});
+			$("#resultsOne td").click(function(){
+				var idTrip = $(this).parent().children("idTrip").text();
+				var idVehicle = $(this).parent().children("idVehicle").text();
+				gps(idTrip, idVehicle);
+			});
+			//alert(gps);
+		});	
+		</script>
+	</head>
+	<body>
+		<h1>RouteFun</h1>
+		<h2>Rankings</h2>
+		<table class='table'>
+			<tr>
+				<td><button type='button' class="btn btn-primary" id='one'>1</button></td>
+				<td><button type='button' class="btn btn-primary" id='two'>2</button></td>
+				<td><button type='button' class="btn btn-primary" id='three'>3</button></td>
+				<td><button type='button' class="btn btn-primary" id='four'>4</button></td>
+				<td><button type='button' class="btn btn-primary" id='five'>5</button></td>
+			</tr>
+		</table>
+		<h2>Lat/Long</h2>
+		
+		<table class='table'>
+			<tr>
+				<td><button type='button' class="btn btn-primary" id='one_gps'>1</button></td>
+				<td><button type='button' class="btn btn-primary" id='two_gps'>2</button></td>
+				<td><button type='button' class="btn btn-primary" id='three_gps'>3</button></td>
+				<td><button type='button' class="btn btn-primary" id='four_gps'>4</button></td>
+				<td><button type='button' class="btn btn-primary" id='five_gps'>5</button></td>
+			</tr>
+		</table>
+
+		<br/>
+
+		<table class='table' id="results">
+			<tr>
+				<th>idTrips, idVehicles</th>
+			</tr>
+		</table>
+
+		<table class='table' id="resultsOne">
+			<tr>
+				<th>idTrips</th><th>idVehicles</th>
+			</tr>
+		</table>
+	</body>
+</html>
