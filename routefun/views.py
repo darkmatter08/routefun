@@ -35,7 +35,7 @@ def searchResults(request):
 def getAllGPSCoords(request):
 	# if request.method != 'POST':
 	# 	return HttpResponseBadRequest()
-	#routeId = request.POST['routeId']
+	routeId = request.POST['routeId']
 	print "allgps"
 
 	if request.method != 'POST':
