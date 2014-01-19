@@ -19,7 +19,7 @@
 			// define functions:
 			
 			gps = function gps(myIdTrips, myIdVehicles) {
-				$.post('/api/allgps',
+				$.post('api/allgps',
 					{idTrips: myIdTrips, idVehicles: myIdVehicles},
 					// Update Table
 					function(data, status) {
@@ -29,7 +29,7 @@
 			};
 
 			function getResults(myRanking) {
-				$.post('/api/searchresults',
+				$.post('api/searchresults',
 					{ranking: myRanking},
 					function(data, status) {
 						// Update Table
