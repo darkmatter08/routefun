@@ -14,6 +14,7 @@ def home(request):
 	html = t.render(Context({}))#Context(authors))
 	return HttpResponse(html)
 
+# POST with ranking to get all routes with route.ranking >= ranking
 @csrf_exempt
 def searchResults(request):
 	if request.method != 'POST':
@@ -22,22 +23,15 @@ def searchResults(request):
 	if 'ranking' in request.POST:
 		ranking = request.POST['ranking']
 	else:
-		ranking = 4
-	# ranking = 4
+		return HttpResponseBadRequest()
+
 	response_data = getTripsByRanking(ranking)
-	print "search results"
-	print response_data
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-# POST request with route ID to get all GPS Coords
+# POST with idTrips, idVehicles to get all GPS Coords
 @csrf_exempt
 def getAllGPSCoords(request):
-	# if request.method != 'POST':
-	# 	return HttpResponseBadRequest()
-	routeId = request.POST['routeId']
-	print "allgps"
-
 	if request.method != 'POST':
 		return HttpResponseBadRequest()
 
@@ -45,9 +39,7 @@ def getAllGPSCoords(request):
 		idTrips = request.POST['idTrips']
 		idVehicles = request.POST['idVehicles']
 	else:
-		idTrips = 5
-		idVehicles = 2
+		return HttpResponseBadRequest()
 
 	response_data = getAllGPSCoordsByTrip(idTrips, idVehicles)
-	# print response_data
 	return HttpResponse(json.dumps(response_data), content_type="application/json")

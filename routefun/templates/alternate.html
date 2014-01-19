@@ -5,7 +5,14 @@
 		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-		<style>	</style>
+		<style> 
+		html, body, #map-canvas {
+		height: 100%;
+		/*width: 50%;*/
+		margin: 0px;
+		padding: 0px
+		}
+		</style>
 		<script>
 		var gps;
 		$(document).ready(function(){
@@ -16,8 +23,7 @@
 					{idTrips: myIdTrips, idVehicles: myIdVehicles},
 					// Update Table
 					function(data, status) {
-						alert("myIdTrips: " + myIdTrips + " myIdVehicles: " + myIdVehicles);
-						alert(data);
+						setupLine(data);
 					}
 				);
 			};
@@ -25,21 +31,20 @@
 			function getResults(myRanking) {
 				$.post('/api/searchresults',
 					{ranking: myRanking},
-					// Update Table
 					function(data, status) {
-						//alert(data);
+						// Update Table
 						for (var index in data){
-							//alert(tuple);
 							var trip = data[index].idTrips;
 							var vehicle = data[index].idVehicles;
 							var trip_vehicle = trip + ', ' + vehicle;
 							$('#results').append('<tr><td><button type=\'button\' class="btn btn-primary gpsButton" onclick=\'$(document).ready(function(){gps(' + trip_vehicle + ')});\'>' + trip_vehicle + '</button></td></tr>');
 							$('#resultsOne').append('<tr><td class="idTrip">' + trip + '</td><td class="idVehicle">' + vehicle + '</td></tr>');
 						}
+						// Assign click handler for each row
 						$("#resultsOne td").click(function(){
 							var idTrip = $(this).parent().children(".idTrip").text();
 							var idVehicle = $(this).parent().children(".idVehicle").text();
-							alert("idTrip: " + idTrip + " idVehicle: " + idVehicle);
+							//alert("idTrip: " + idTrip + " idVehicle: " + idVehicle);
 							gps(idTrip, idVehicle);
 						});
 					}
@@ -62,35 +67,73 @@
 				getResults(5);
 			});
 
-			$("#one_gps").click(function(){
-				gps(1,1);
-			});
-			$("#two_gps").click(function(){
-				gps(2,2);
-			});
-			$("#three_gps").click(function(){
-				gps(2,4);
-			});
-			$("#four_gps").click(function(){
-				gps(5,2);
-			});
-			$("#five_gps").click(function(){
-				gps(4,1);
-			});
-			$(".gpsButton").click(function(){
-				gps()
-			});
 			$("#resultsOne td").click(function(){
 				var idTrip = $(this).parent().children("idTrip").text();
 				var idVehicle = $(this).parent().children("idVehicle").text();
 				gps(idTrip, idVehicle);
 			});
-			//alert(gps);
+
+			$("#showPath").click(function(){
+				setupLine();
+			});
+
+			// adds a pin at the given google.maps.LatLng location
+			function addPin(googleLatLng) {
+				var marker = new google.maps.Marker({
+					position: googleLatLng,
+					title: 'Start or end',
+					map: map
+				});
+			}
+
+			// Draws path on map, adding markers to first and last coord pair.
+			// LatLongPairs: List of dictionaries with two elements: Latitude and Longitude
+			function setupLine(LatLongPairs) {
+				var routeCoords = new Array();
+
+				for (var index in LatLongPairs) {
+					var lat = LatLongPairs[index]["Latitude"];
+					var lon = LatLongPairs[index]["Longitude"];
+					routeCoords.push(new google.maps.LatLng(lat, lon));
+				}
+
+				addPin(routeCoords[0]);
+				addPin(routeCoords[routeCoords.length-1]);
+
+				currentRoute = new google.maps.Polyline({
+					path: routeCoords,
+					strokeColor: '#FF0000',
+					strokeOpacity: 1.0,
+					strokeWeight: 2
+				});
+				currentRoute.setMap(map);
+			}
 		});	
 		</script>
+
+		<!-- Google Maps JS -->
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<script>
+			// Sets up the map without any lines on it. 
+			var map;
+			function initialize() {
+				var mapOptions = {
+					zoom: 9,
+					// Center the map on Auburn Hills, MI
+					center: new google.maps.LatLng(42.688114,-83.232521)
+				};
+
+				map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+			}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+
 	</head>
 	<body>
 		<h1>RouteFun</h1>
+		<h3>Shawn Jain, Andrew Chen</h3>
+		<p>MIT-VW-IDEO hackathon</p>
 		<h2>Rankings</h2>
 		<table class='table'>
 			<tr>
@@ -101,20 +144,8 @@
 				<td><button type='button' class="btn btn-primary" id='five'>5</button></td>
 			</tr>
 		</table>
-		<h2>Lat/Long</h2>
-		
-		<table class='table'>
-			<tr>
-				<td><button type='button' class="btn btn-primary" id='one_gps'>1</button></td>
-				<td><button type='button' class="btn btn-primary" id='two_gps'>2</button></td>
-				<td><button type='button' class="btn btn-primary" id='three_gps'>3</button></td>
-				<td><button type='button' class="btn btn-primary" id='four_gps'>4</button></td>
-				<td><button type='button' class="btn btn-primary" id='five_gps'>5</button></td>
-			</tr>
-		</table>
 
-		<br/>
-
+		<h2>Results:</h2>
 		<table class='table' id="results">
 			<tr>
 				<th>idTrips, idVehicles</th>
@@ -126,5 +157,8 @@
 				<th>idTrips</th><th>idVehicles</th>
 			</tr>
 		</table>
+
+	<button id="showPath">Show Path</button>
+	<div id="map-canvas"></div>
 	</body>
 </html>
